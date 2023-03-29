@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Home Work</title>
+</head>
+
+<body>
+	<h2>Задачі 1</h2>
+	<h3>Умови задач</h3>
+	<p>
+		Описати масив об’єктів – сайтів розроблених компанією з такими властивостями
+		----- Властивості ------
+		- назва компанії на час розробки (назву періодично змінюють)
+		- власник компанії
+		- спонсори (масив спонсорів)
+		* прізвище спонсора
+		* ім’я спонсора
+		* сума вкладень спонсора
+		- рік випуску
+		- вартість сайту
+		Знайти:
+		1) загальну вартість усіх сайтів
+		2) кількість сайтів, що було зроблено між 2000 та 2009 рр.
+		3) кількість сайтів, де сума спонсорських вкладень була більшою за 100000
+		4) створити загальний список усіх спонсорів (поки можуть повторюватись, просто зібрати усі у масив)
+		5) знайти рік, коли прибуток був найбільшим
+		6) упорядкувати список за спаданням прибутку
+		7) Створити 2 окремих списки з копіями об’єктів, що містять сайти з вартість до 10000 і більше 10000.
+	</p>
+
+	<h3>Розв'язок</h3>
+	<script>
+		//========================================================================================================================================================
+		let sitesList = [
+			{
+				title: 'company_1',
+				owner: 'Brad Pitt',
+				sponsors: {
+					surname: 'Jolie',
+					name: 'Angelina',
+					investments: 105000,
+				},
+				year: 2005,
+				cost: 250000
+			},
+			{
+				title: 'company_2',
+				owner: 'Danyil Smith',
+				sponsors: {
+					surname: 'Kruz',
+					name: 'Tom',
+					investments: 8000,
+				},
+				year: 2020,
+				cost: 35000
+			},
+			{
+				title: 'company_3',
+				owner: 'Tom Hanks',
+				sponsors: {
+					surname: 'Petrenko',
+					name: 'Petro',
+					investments: 6000,
+				},
+				year: 2002,
+				cost: 5800
+			},
+			{
+				title: 'company_4',
+				owner: 'Ivanchenko Ivan',
+				sponsors: {
+					surname: 'Butler',
+					name: 'Gerard',
+					investments: 14000,
+				},
+				year: 2010,
+				cost: 9000
+			}
+		]
+		//========================================================================================================================================================
+		//Загальна вартість усіх сайтів
+		const totalCost = sitesList.reduce((prevSum, company) => prevSum + company.cost, 0)
+		console.log(totalCost)
+		//========================================================================================================================================================
+		// кількість сайтів, що було зроблено між 2000 та 2009 рр.
+		const numberSitesIn2000_2009 = sitesList.reduce((prevSum, company) => (company.year > 2000 && company.year < 2009) ? prevSum + 1 : prevSum, 0)
+		console.log(numberSitesIn2000_2009)
+		//========================================================================================================================================================
+		// кількість сайтів, де сума спонсорських вкладень була більшою за 100000
+		const numberSitesInvestmentsMore100000 = sitesList.reduce((prevSum, company) => (company.sponsors.investments > 100000) ? prevSum + 1 : prevSum, 0)
+		console.log(numberSitesInvestmentsMore100000)
+		//========================================================================================================================================================
+		// загальний список усіх спонсорів
+		const nameList = sitesList.map((item) => `${item.sponsors.name} ${item.sponsors.surname}`)
+		console.log(nameList)
+		//========================================================================================================================================================
+		//рік, коли прибуток був найбільшим
+		function getYareMaxCost(itemList) {
+			let itemInMaxCost = itemList[0]
+			for (const item of itemList) {
+				if (item.cost > itemInMaxCost.cost) itemInMaxCost = item
+			}
+			return itemInMaxCost
+		}
+		const yareMaxCost = (getYareMaxCost(sitesList)).year
+		console.log(yareMaxCost)
+		//====================================================================================================================================================
+		//====  		6) упорядкувати список за спаданням прибутку   ===================================
+		function getSortingLis(list) {
+			return list.sort((elem1, elem2) => elem2.cost - elem1.cost)
+		}
+
+		// Aльтернативний варіант =============
+		// function sortingList(list) {
+		// 	for (let i = 0; i < list.length; i++) {
+		// 		let currentMaxCostIndex = i
+		// 		for (let j = i + 1; j < list.length; j++) {
+		// 			if (list[j].cost > list[currentMaxCostIndex].cost) currentMaxCostIndex = j
+		// 		}
+		// 		if (i !== currentMaxCostIndex) {
+		// 			tmp = list[i]
+		// 			list[i] = list[currentMaxCostIndex]
+		// 			list[currentMaxCostIndex] = tmp
+		// 		}
+		// 	}
+		// 	return list
+		// }
+		//=====================================
+		const copysitesList = JSON.parse(JSON.stringify(sitesList))
+		const sortedList = getSortingLis(copysitesList)
+		console.log(sortedList)
+		//========================================================================================================================================================
+		// 7) Створити 2 окремих списки з копіями об’єктів, що містять сайти з вартістю до 10000 і більше 10000.
+
+		function getSortedListByCost(list) {
+			let listCostMore10000 = []
+			let listCostLess10000 = []
+			for (const company of list) {
+				if (company.cost > 10000) listCostMore10000.push((JSON.parse(JSON.stringify(company))))
+				else listCostLess10000.push((JSON.parse(JSON.stringify(company))))
+			}
+			return { listCostMore10000, listCostLess10000 }
+		}
+
+		const sortedListByCost = getSortedListByCost(sitesList)
+		const companyListCostMore10000 = sortedListByCost.listCostMore10000
+		console.log(companyListCostMore10000)
+		const companyListCostLess10000 = sortedListByCost.listCostLess10000
+		console.log(companyListCostLess10000)
+		//========================================================================================================================================================
+	</script>
+	<style>
+		h2 {
+			color: #08368b;
+		}
+
+		h3 {
+			color: #06700f;
+		}
+
+		ul {
+			margin: 0;
+		}
+	</style>
+</body>
+
+</html>

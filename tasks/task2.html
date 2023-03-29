@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Home Work</title>
+</head>
+
+<body>
+	<h2>Задачі 2</h2>
+	<h3>Умови задач</h3>
+	<p>
+		Розробити функцію, у яку передають об’єкт (день, місяць, рік). Визначити, який буде рік через N місяців.
+	</p>
+
+	<h3>Розв'язок</h3>
+	<script>
+		//========================================================================================================================================================		
+		function getShiftedYear({ year, month }, N) {
+			let deltaMonths = (month === 12 && N >= 12) ? month + N - 1 : month + N
+			let addYears = Math.floor(deltaMonths / 12)
+			return deltaMonths > 12 ? addYears + year : year
+		}
+
+		let userDate = {
+			day: 24,
+			month: 1,
+			year: 2024,
+		}
+
+		const N = parseInt(prompt('N='))
+		console.log(getShiftedYear(userDate, N))
+		//========================================================================================================================================================
+	</script>
+	<style>
+		h2 {
+			color: #08368b;
+		}
+
+		h3 {
+			color: #06700f;
+		}
+
+		ul {
+			margin: 0;
+		}
+	</style>
+</body>
+
+</html>
